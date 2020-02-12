@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/com.mall.common/com.mall.common.iml" filepath="$PROJECT_DIR$/com.mall.common/com.mall.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.common.pom/com.mall.common.pom.iml" filepath="$PROJECT_DIR$/com.mall.common.pom/com.mall.common.pom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.erueka.server/com.mall.erueka.server.iml" filepath="$PROJECT_DIR$/com.mall.erueka.server/com.mall.erueka.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.gateway/com.mall.gateway.iml" filepath="$PROJECT_DIR$/com.mall.gateway/com.mall.gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.merge/com.mall.merge.iml" filepath="$PROJECT_DIR$/com.mall.merge/com.mall.merge.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.user/com.mall.user.iml" filepath="$PROJECT_DIR$/com.mall.user/com.mall.user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.mall.zuul/com.mall.zuul.iml" filepath="$PROJECT_DIR$/com.mall.zuul/com.mall.zuul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/designmode/designmode.iml" filepath="$PROJECT_DIR$/designmode/designmode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/review/review.iml" filepath="$PROJECT_DIR$/review/review.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/study.iml" filepath="$PROJECT_DIR$/.idea/study.iml" />
+    </modules>
+  </component>
+</project>

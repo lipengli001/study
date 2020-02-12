@@ -1,0 +1,120 @@
+server:
+  port: 7070
+feign:
+  hystrix:
+    enabled: true
+
+spring:
+  application:
+    name: gateway
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+          filters:
+            # redis限流 ， filter名称必须是RequestRateLimiter
+            - name: RequestRateLimiter
+              args:
+                # 使用SpEL名称引用Bean，与上面新建的RateLimiterConfig类中的bean的name相同
+                key-resolver: '#{@addrKeyResolver}'
+                # 每秒最大访问次数
+                redis-rate-limiter.replenishRate: 500
+                # 令牌桶最大容量
+                redis-rate-limiter.burstCapacity: 5000
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: 'forward:/defaultFallback'
+        - id: merge
+          uri: lb://merge
+          predicates:
+            - Path=/merge/**
+          filters:
+            # redis限流 ， filter名称必须是RequestRateLimiter
+            - name: RequestRateLimiter
+              args:
+                # 使用SpEL名称引用Bean，与上面新建的RateLimiterConfig类中的bean的name相同
+                key-resolver: '#{@addrKeyResolver}'
+                # 每秒最大访问次数
+                redis-rate-limiter.replenishRate: 500
+                # 令牌桶最大容量
+                redis-rate-limiter.burstCapacity: 5000
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: 'forward:/defaultFallback'
+ribbon:
+  ReadTimeout: 20000
+  OkToRetryOnAllOperations: false
+  MaxAutoRetriesNextServer: 0
+  MaxAutoRetries: 0
+hystrix:
+  threadpool:
+    default:
+      # 线程池大小
+      coreSize: 50
+      # 缓冲区大小， 如果为-1，则不缓冲，直接进行降级 fallback
+      maxQueueSize: 50
+      # 缓冲区大小超限的阈值，超限就直接降级
+      queueSizeRejectionThreshold: 100
+  command:
+    default:
+      execution:
+        isolation:
+          #执行策略
+          # 资源隔离模式，默认thread。 SEMAPHORE为信号量，THREAD为线程池
+          strategy: THREAD
+          thread:
+            # 超时时间，默认1000毫秒
+            timeoutInMilliseconds: 3000
+            # 超时时中断线程
+            interruptOnTimeout: true
+            # 取消时候中断线程
+            interruptOnFutureCancel: false
+        timeout:
+          # 是否打开超时
+          enabled: true
+      # 拒绝策略
+      fallback:
+        # 是否开启服务降级
+        enabled: true
+        # fallback执行并发量
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 100
+      # 熔断策略
+      circuitBreaker:
+        # 启用/禁用熔断机制
+        enabled: false
+        # 强制开启熔断
+        forceOpen: false
+        # 强制关闭熔断
+        forceClosed: false
+        # 前提条件，一定时间内发起一定数量的请求。  也就是5秒钟内(这个10秒对应下面的滚动窗口长度)至少请求4次，熔断器才发挥起作用。  默认20
+        requestVolumeThreshold: 20
+        # 错误百分比。达到或超过这个百分比，熔断器打开。  比如：5秒内有4个请求，2个请求超时或者失败，就会自动开启熔断
+        errorThresholdPercentage: 50
+        # 5秒后，进入半打开状态（熔断开启，间隔一段时间后，会让一部分的命令去请求服务提供者，如果结果依旧是失败，则又会进入熔断状态，如果成功，就关闭熔断）。 默认5秒
+        sleepWindowInMilliseconds: 5000
+      requestCache:
+        enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZooe: http://169.254.56.187:8761/eureka/,http://169.254.56.187:8762/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+#management:
+#  server:
+#    servlet:
+#      context-path: /

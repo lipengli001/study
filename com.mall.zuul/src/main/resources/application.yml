@@ -1,0 +1,22 @@
+server:
+  port: 7071
+spring:
+  application:
+    name: zuul
+eureka:
+  client:
+    service-url:
+      defaultZooe: http://169.254.56.187:8761/eureka/,http://169.254.56.187:8762/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+zuul:
+  routes:
+    user:
+      path: /user/**
+      serviceId: user
+      stripPrefix: false
+    merge:
+      path: /merge/**
+      serviceId: merge
+      stripPrefix: false

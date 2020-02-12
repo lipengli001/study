@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="demo" />
+        <module name="com.mall.common.pom" />
+        <module name="com.mall.common" />
+        <module name="com.mall.gateway" />
+        <module name="client" />
+        <module name="com.mall.merge" />
+        <module name="com.mall.user" />
+        <module name="com.mall.zuul" />
+        <module name="com.mall.thread.pool" />
+        <module name="com.mall.erueka.server" />
+        <module name="designmode" />
+        <module name="review" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.mall.common" target="1.8" />
+      <module name="com.mall.common.pom" target="1.8" />
+      <module name="com.mall.erueka.server" target="1.8" />
+      <module name="com.mall.gateway" target="1.8" />
+      <module name="com.mall.merge" target="1.8" />
+      <module name="com.mall.user" target="1.8" />
+      <module name="com.mall.zuul" target="1.8" />
+      <module name="demo" target="1.8" />
+      <module name="designmode" target="1.8" />
+      <module name="review" target="7" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="com.mall.common" options="-parameters" />
+      <module name="com.mall.common.pom" options="-parameters" />
+      <module name="com.mall.erueka.server" options="-parameters" />
+      <module name="com.mall.gateway" options="-parameters" />
+      <module name="com.mall.merge" options="-parameters" />
+      <module name="com.mall.user" options="-parameters" />
+      <module name="com.mall.zuul" options="-parameters" />
+      <module name="demo" options="-parameters" />
+      <module name="designmode" options="-parameters" />
+    </option>
+  </component>
+</project>

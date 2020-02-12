@@ -1,0 +1,88 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: user
+
+ribbon:
+  ReadTimeout: 20000
+  OkToRetryOnAllOperations: false
+  MaxAutoRetriesNextServer: 0
+  MaxAutoRetries: 0
+
+hystrix:
+  threadpool:
+    default:
+      # 线程池大小
+      coreSize: 50
+      # 缓冲区大小， 如果为-1，则不缓冲，直接进行降级 fallback
+      maxQueueSize: 50
+      # 缓冲区大小超限的阈值，超限就直接降级
+      queueSizeRejectionThreshold: 100
+  command:
+    default:
+      execution:
+        isolation:
+          #执行策略
+          # 资源隔离模式，默认thread。 SEMAPHORE为信号量，THREAD为线程池
+          strategy: THREAD
+          thread:
+            # 超时时间，默认1000毫秒
+            timeoutInMilliseconds: 3000
+            # 超时时中断线程
+            interruptOnTimeout: true
+            # 取消时候中断线程
+            interruptOnFutureCancel: false
+        timeout:
+          # 是否打开超时
+          enabled: true
+      # 拒绝策略
+      fallback:
+        # 是否开启服务降级
+        enabled: true
+        # fallback执行并发量
+        isolation:
+          semaphore:
+            maxConcurrentRequests: 100
+      # 熔断策略
+      circuitBreaker:
+        # 启用/禁用熔断机制
+        enabled: false
+        # 强制开启熔断
+        forceOpen: false
+        # 强制关闭熔断
+        forceClosed: false
+        # 前提条件，一定时间内发起一定数量的请求。  也就是5秒钟内(这个10秒对应下面的滚动窗口长度)至少请求4次，熔断器才发挥起作用。  默认20
+        requestVolumeThreshold: 20
+        # 错误百分比。达到或超过这个百分比，熔断器打开。  比如：5秒内有4个请求，2个请求超时或者失败，就会自动开启熔断
+        errorThresholdPercentage: 50
+        # 5秒后，进入半打开状态（熔断开启，间隔一段时间后，会让一部分的命令去请求服务提供者，如果结果依旧是失败，则又会进入熔断状态，如果成功，就关闭熔断）。 默认5秒
+        sleepWindowInMilliseconds: 5000
+      requestCache:
+        enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZooe: http://169.254.56.187:8761/eureka/,http://169.254.56.187:8762/eureka/
+    #客户端是否从注册中心获取注册表信息
+    fetch-registry: true
+    #客户端从注册中心获取注册表信息的时间间隔
+    registry-fetch-interval-seconds: 5
+    #缓存刷新执行器指数回退相关属性.在发生一系列超时的情况下，它是重试延迟的最大乘数
+    cache-refresh-executor-exponential-back-off-bound: 10
+    #实例是否在eureka服务器上注册其信息以供他人发现
+    register-with-eureka: true
+    #心跳执行器指数回退相关属性.在发生一系列超时的情况下，它是重试延迟的最大乘数
+    heartbeat-executor-exponential-back-off-bound: 10
+    #通过ApplicationInfoManager进行的本地状态更新将触发对远程eureka服务器的按需（但速率受限）注册/更新。
+    on-demand-update-status-change: true
+    #指示将实例更改复制到eureka服务器的频率（以秒为单位）。
+    instance-info-replication-interval-seconds: 30
+    #最初将实例信息复制到eureka服务器的时间（以秒为单位）
+    initial-instance-info-replication-interval-seconds: 5
+  instance:
+    #eureka客户端需要多长时间（以秒为单位）向eureka服务器发送心跳以指示其仍处于活动状态。
+    lease-renewal-interval-in-seconds: 10
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}

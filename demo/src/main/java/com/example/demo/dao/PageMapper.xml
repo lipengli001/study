@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.PageMapper">
+    <resultMap id="Base_Result" type="com.example.demo.bean.Page">
+        <id column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="NAME" jdbcType="VARCHAR" property="name"/>
+        <result column="INTRO" jdbcType="VARCHAR" property="intro"/>
+        <result column="KEYWORDS" jdbcType="VARCHAR" property="keywords"/>
+        <result column="STRUCTURE" jdbcType="VARCHAR" property="structure"/>
+        <result column="ECTRA_HEADER" jdbcType="VARCHAR" property="ectra_header"/>
+    </resultMap>
+
+    <sql id="Base_column">
+        ID, NAME, INTRO, KEYWORDS, STRUCTURE, ECTRA_HEADER
+    </sql>
+
+    <insert id="insert" parameterType="com.example.demo.bean.Page" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO PAGE(NAME, INTRO, KEYWORDS, STRUCTURE, ECTRA_HEADER)
+        VALUES (#{name}, #{intro}, #{keywords}, #{structure}, #{ectra_header})
+    </insert>
+
+    <update id="update" parameterType="com.example.demo.bean.Page">
+        UPDATE PAGE
+        <set>
+            <if main="name != null">
+                NAME = #{name},
+            </if>
+            <if main="intro != null">
+                INTRO = #{intro},
+            </if>
+            <if main="keywords != null">
+                KEYWORDS = #{keywords},
+            </if>
+            <if main="structure != null">
+                STRUCTURE = #{structure},
+            </if>
+            <if main="ectra_header != null">
+                ECTRA_HEADER = #{ectra_header},
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        DELETE FROM PAGE WHERE ID = #{id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.String" resultMap="Base_Result">
+        SELECT
+        <include refid="Base_column"/>
+        FROM PAGE WHERE ID = #{id}
+    </select>
+
+</mapper>
